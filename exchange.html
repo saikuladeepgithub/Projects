@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> Exchange </title>
+        <script>
+            document.addEventListener('DOMContentLoaded',function(){
+                document.querySelector('form').onsubmit=function(){
+                    fetch('https://api.apilayer.com/exchangerates_data/latest?base=USD&apikey=ouA2fsfGxUNjzsbU3mdKcEm8bniBVspA')
+                    .then(function(response){
+                        return response.json();
+                    })
+                    .then(data=>{
+                        console.log(data);
+                        const c1=document.querySelector('#country1').value.toUpperCase();
+                        const c2=document.querySelector('#country2').value.toUpperCase();
+                        const rate1=data.rates[c1];
+                        const rate2=data.rates[c2];
+                        const r1=parseInt(document.querySelector('#r1').value,10);
+                        const temp=r1/rate1;
+                        const res=temp*rate2;
+                        if(rate1 && rate2)
+                        {
+                            document.querySelector('div').innerHTML=`result of ${c2} : ${res}`;
+                        }
+                        else
+                        {
+                            document.querySelector('div').innerHTML=`Invalid countries`;
+                        }
+                        
+                    }).catch(error=>{
+                        console.log(`Error : ${error}`);
+                    });
+                    return false;
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <form>
+            <input type="text" placeholder="Country 1" id="country1">
+            <input type="text" placeholder="amount 1" id="r1"> <br> <br>
+            <input type="text" placeholder="country 2" id="country2"> <br> <br>
+            <input type="submit" id="convert">
+        </form>
+
+        <div>
+        </div>
+    </body>
+</html>
