@@ -1,0 +1,76 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> Registration success </h1>
+    <a href="{% url 'login'%}"> Login </a>
+    <a href="{% url 'index' %}"> Home </a>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-size: 16px;
+            margin: 0 10px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a:hover {
+            background-color: #3498db;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if user.is_authenticated %}
+        <a href="{% url 'index' %}">
+         <h1 style="color:yellow">Hi!{{ user.username }}</h1>   
+        </a>
+{% endif %}
+        <h1>Registration Successful!</h1>
+        <p>Your registration was completed successfully.</p>
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'index' %}">Home</a>
+    </div>
+</body>
+</html>

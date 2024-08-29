@@ -1,0 +1,175 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{event}}</title>
+</head>
+<body>
+    {% if messages %}
+    <div style="color:red">
+        {% for message in messages %}
+            <p {% if message.tags %} class="{{ message.tags }}" {% endif %} style="color:green">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h1>Chat for {{ event.name }}</h1>
+
+    <div class="chat-messages">
+        <h2>Messages</h2>
+        <ul>
+            {% for chat in chats %}
+                <li><strong>{{ chat.user.username }}:</strong> {{ chat.message }} ({{ chat.timestamp }})</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <h2>Send a Message</h2>
+        {{ cform.as_p }}
+        <button type="submit">Send</button>
+    </form>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event.name }}</title>
+    <style>
+        body {
+            background-color: #000; /* Black background */
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #fff; /* White color for headings */
+        }
+        .chat-messages {
+            margin-bottom: 20px;
+        }
+        .chat-messages ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .chat-messages li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: flex-start; /* Default align messages to the left */
+        }
+        .chat-messages li.user-message {
+            justify-content: flex-end; /* Align user's messages to the right */
+        }
+        .chat-messages li span {
+            background-color: #333; /* Dark background for messages */
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 60%;
+            display: inline-block;
+        }
+        .chat-messages li.user-message span {
+            background-color:white; /* Blue background for user's messages */
+            color:black;
+        }
+        .chat-messages strong {
+            color: #ff4c4c; /* Red color for usernames */
+            display: block;
+            margin-bottom: 5px;
+        }
+        /* Input field styling */
+        form input[type="text"], 
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #333; /* Dark background for input */
+            color: #fff; /* White text in input */
+        }
+        /* Submit button styling */
+        form button {
+            background-color: #ff4c4c; /* Red background for button */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        form button:hover {
+            background-color: #ff6b6b; /* Lighter red on hover */
+        }
+        form button i {
+            margin-right: 5px; /* Space between icon and text */
+        }
+        /* Icon styling */
+        form button i {
+            font-size: 18px;
+        }
+        /* Responsive design */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            form button {
+                width: 100%;
+            }
+        }
+    </style>
+    <!-- Include Font Awesome for the icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <a href="{% url 'index' %}">
+     <h1 style="color:yellow">{{ user.username }}</h1>   
+    </a>
+    {% endif %}
+    {% if messages %}
+    <div style="color:red">
+        {% for message in messages %}
+            <p {% if message.tags %} class="{{ message.tags }}" {% endif %} style="color:green">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h1>Chat for {{ event.name }}</h1>
+
+    <div class="chat-messages">
+        <h2>Messages</h2>
+        <ul>
+            {% for chat in chats %}
+                {% if chat.user.username == user.username %}
+                    <li class="user-message"><span><strong>You</strong> {{ chat.message }} ({{ chat.timestamp }})</span></li>
+                {% else %}
+                    <li><span><strong>{{ chat.user.username }}:</strong> {{ chat.message }} ({{ chat.timestamp }})</span></li>
+                {% endif %}
+            {% endfor %}
+            <!-- to recognise last message -->
+            <div id="last-message"></div
+        </ul>
+    </div>
+
+    <!-- Chat Message Form -->
+    <form method="post">
+        {% csrf_token %}
+        <h2>Send a Message</h2>
+        {{ cform.as_p }}
+        <button type="submit"><i class="fas fa-paper-plane"></i> Send</button>
+    </form>
+    <script>
+        window.onload = function() {
+            var lastMessage = document.getElementById('last-message');
+            lastMessage.scrollIntoView();
+        };
+    </script>
+</body>
+</html>

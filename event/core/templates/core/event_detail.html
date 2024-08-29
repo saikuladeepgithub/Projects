@@ -1,0 +1,237 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event.name }}</title>
+</head>
+<body>
+    <h1>{{ event.name }}</h1>
+    <p>{{ event.description }}</p>
+
+    <h2>Volunteers</h2>
+    <ul>
+        {% for volunteer in volunteers %}
+            <li>{{ volunteer.user.first_name }} {{ volunteer.user.last_name }} - {{ volunteer.activities }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Reviews</h2>
+    {% for review in reviews %}
+        <p><strong>{{ review.user.username }}:</strong> {{ review.content }} ({{ review.created_at }})</p>
+    {% endfor %}
+
+    <h2>Submit a Review</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ rform.as_p }}
+        <button type="submit" name="review_submit">Submit Review</button>
+    </form>
+
+  
+    <h2>Register as a Volunteer</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ vform.as_p }}
+        <button type="submit" name="volunteer_submit">Register as Volunteer</button>
+    </form>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <title>{{ event.name }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color:white;
+            color:black;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1, h2 {
+            color: red;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background-color: #34495e;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        form {
+            background-color: #34495e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
+        }
+        form h2 {
+            margin-top: 0;
+        }
+        form button {
+            background-color: #e74c3c;
+            color: #ecf0f1;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        form button:hover {
+            background-color: #c0392b;
+        }
+        .reviews, .volunteers {
+            width: 100%;
+            max-width: 600px;
+        }
+        .reviews p, .volunteers ul li {
+            background-color: blueviolet;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        img{
+            width: 60%;
+            border-radius: 10px;
+            display: block;
+            transition: transform 0.5s;
+            height: 50%;
+        }
+        /* Styling the 'Join Chat' button */
+    .join-chat-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ff4c4c; /* Red background */
+        color: white; /* White text */
+        text-decoration: none; /* Remove underline */
+        border-radius: 5px; /* Rounded corners */
+        font-weight: bold; /* Bold text */
+        font-size: 16px; /* Font size */
+        transition: background-color 0.3s ease; /* Smooth hover effect */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    }
+
+    /* Hover effect */
+    .join-chat-btn:hover {
+        background-color: #ff6b6b; /* Lighter red on hover */
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+    }
+
+    /* Optional: Add an icon to the button */
+    .join-chat-btn::before {
+        content: '\f086'; /* FontAwesome chat icon */
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        margin-right: 8px; /* Space between icon and text */
+        font-size: 18px; /* Size of the icon */
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+        .join-chat-btn {
+            font-size: 14px;
+            padding: 8px 15px;
+        }
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+    
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+    
+
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+                        <a href="{% url 'index' %}">
+                         <h1 style="color:yellow">{{user.username }}</h1>   
+                        </a>
+    {% endif %}
+    {% if messages %}
+    <div style="color:red">
+        {% for message in messages %}
+            <p {% if message.tags %} class="{{ message.tags }}" {% endif %} style="color:green">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h1>{{ event.name }}</h1>
+    <p>{{ event.description }}</p>
+    <img src="{{event.image.url }}">
+    <br>
+    <br>
+    <a href="{% url 'event_chat' event.id %}" class="join-chat-btn">Join Chat</a>
+
+    <div class="volunteers">
+        <h2>Volunteers</h2>
+        <ul>
+            {% for volunteer in volunteers %}
+                <li>{{ volunteer.user.first_name }} {{ volunteer.user.last_name }} - {{ volunteer.activities }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if user.is_authenticated %}
+    {% if is_volunteer %}
+        <!-- Show Unregister button if the user is already a volunteer -->
+        <form method="post" action="{% url 'unregister_volunteer' event.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Unregister as Volunteer</button>
+        </form>
+    {% else %}
+        <!-- Show Volunteer Registration Form -->
+        <form method="post">
+            {% csrf_token %}
+            {{ vform.as_p }}
+            <button type="submit" name="volunteer_submit" class="btn btn-primary">Volunteer</button>
+        </form>
+    {% endif %}
+{% endif %}
+
+
+    <div class="reviews">
+        <h2>Reviews</h2>
+        {% for review in reviews %}
+            <p><strong>{{ review.user.username }}:</strong> {{ review.content }} ({{ review.created_at }})</p>
+        {% endfor %}
+    </div>
+
+    <!-- Review Form -->
+    <form method="post">
+        {% csrf_token %}
+        <h2>Submit a Review</h2>
+        {{ rform.as_p }}
+        <button type="submit" name="review_submit">Submit Review</button>
+    </form>
+
+
+</body>
+</html>

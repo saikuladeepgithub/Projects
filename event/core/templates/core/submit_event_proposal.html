@@ -1,0 +1,100 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Submit a New Event Proposal</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit Proposal</button>
+    </form>
+</body>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Event Proposal</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color:black; /* Black background */
+            color: rgb(255, 0, 0); /* Orange text */
+        }
+        .card {
+            background-color: black  ; /* Dark card background */
+            color: orangered; /* Orange text */
+        }
+        .card-header {
+            background-color: orangered; /* Slightly lighter header */
+            color: rgb(255, 255, 255); /* Red text in the header */
+        }
+        .btn-success {
+            background-color: green; /* Green submit button */
+            border-color: green; /* Green border for the button */
+        }
+        .btn-success:hover {
+            background-color: #28a745; /* Darker green on hover */
+            border-color: #28a745; 
+        }
+        .alert {
+            color: #fff;
+            background-color: green; /* Dark background for messages */
+            border-color:green;
+        }
+    </style>
+</head>
+<body>
+    <!-- Messages -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <a href="{% url 'index' %}">
+         <h1 style="color:blueviolet">{{ user.username }}</h1>   
+        </a>
+{% endif %}
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header text-center">
+                        <h3>Submit a New Event Proposal</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-block">Submit Proposal</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
